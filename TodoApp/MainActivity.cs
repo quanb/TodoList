@@ -32,6 +32,8 @@ namespace TodoApp
             mTaskListView = (ListView)FindViewById(Resource.Id.list_todo);
             mToolbar = FindViewById<SupportToolbar>(Resource.Id.toolbar);
             SetSupportActionBar(mToolbar);
+            SupportActionBar.SetHomeButtonEnabled(true);
+            SupportActionBar.SetDisplayShowTitleEnabled(true);
             updateUI();
         }
 
