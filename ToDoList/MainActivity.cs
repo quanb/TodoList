@@ -10,17 +10,20 @@ using System.Collections.Generic;
 using System.Linq;
 using Android.Support.V7.App;
 using SupportToolbar = Android.Support.V7.Widget.Toolbar;
+using Android.Support.V4.Widget;
 
-namespace TodoApp
+namespace ToDoList
 {
-    [Activity(Label = "TodoApp", MainLauncher = true, Icon = "@drawable/icon", Theme = "@style/MyTheme")]
-    public class MainActivity : ActionBarActivity
+    [Activity(Label = "ToDoList", MainLauncher = true, Icon = "@drawable/icon", Theme = "@style/MyTheme")]
+    public class MainActivity : AppCompatActivity
     {
         private ListView mTaskListView;
         private ArrayAdapter<string> mAdapter;
         protected IList<Task> tasks;
         private SupportToolbar mToolbar;
-
+        private DrawerLayout mDrawerLayout;
+        private MyActionBarDrawerToggle mDrawerToggle;
+        private ListView mLeftDrawer;
 
         protected override void OnCreate(Bundle bundle)
         {
@@ -31,9 +34,24 @@ namespace TodoApp
 
             mTaskListView = (ListView)FindViewById(Resource.Id.list_todo);
             mToolbar = FindViewById<SupportToolbar>(Resource.Id.toolbar);
+            mDrawerLayout = FindViewById<DrawerLayout>(Resource.Id.drawer_layout);
+            mLeftDrawer = FindViewById<ListView>(Resource.Id.left_drawer);
             SetSupportActionBar(mToolbar);
-            SupportActionBar.SetHomeButtonEnabled(true);
+
+            mDrawerToggle = new MyActionBarDrawerToggle(
+                this,                           //Host Activity
+                mDrawerLayout,                  //DrawerLayout
+                Resource.String.openDrawer,     //Opened Message
+                Resource.String.closeDrawer     //Closed Message
+            );
+
+            mDrawerLayout.SetDrawerListener(mDrawerToggle);
+            //SupportActionBar.SetHomeButtonEnabled(true);
+            SupportActionBar.SetDisplayShowHomeEnabled(true);
+            SupportActionBar.SetDisplayHomeAsUpEnabled(true);
             SupportActionBar.SetDisplayShowTitleEnabled(true);
+            mDrawerToggle.SyncState();
+
             updateUI();
         }
 
@@ -45,6 +63,7 @@ namespace TodoApp
 
         public override bool OnOptionsItemSelected(IMenuItem item)
         {
+            mDrawerToggle.OnOptionsItemSelected(item);
             switch (item.ItemId)
             {
                 case Resource.Id.action_add_task:
@@ -71,6 +90,18 @@ namespace TodoApp
                 default:
                     return base.OnOptionsItemSelected(item);
             }
+        }
+
+        protected override void OnPostCreate(Bundle savedInstanceState)
+        {
+            base.OnPostCreate(savedInstanceState);
+            mDrawerToggle.SyncState();
+        }
+
+        public override void OnConfigurationChanged(Android.Content.Res.Configuration newConfig)
+        {
+            base.OnConfigurationChanged(newConfig);
+            mDrawerToggle.OnConfigurationChanged(newConfig);
         }
 
         private void updateUI()

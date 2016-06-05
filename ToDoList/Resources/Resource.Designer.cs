@@ -9,9 +9,9 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-[assembly: global::Android.Runtime.ResourceDesignerAttribute("TodoApp.Resource", IsApplication=true)]
+[assembly: global::Android.Runtime.ResourceDesignerAttribute("ToDoList.Resource", IsApplication=true)]
 
-namespace TodoApp
+namespace ToDoList
 {
 	
 	
@@ -1994,6 +1994,12 @@ namespace TodoApp
 			// aapt resource value: 0x7f050012
 			public const int abc_toolbar_collapse_description = 2131034130;
 			
+			// aapt resource value: 0x7f050017
+			public const int closeDrawer = 2131034135;
+			
+			// aapt resource value: 0x7f050016
+			public const int openDrawer = 2131034134;
+			
 			// aapt resource value: 0x7f050013
 			public const int status_bar_notification_info_overflow = 2131034131;
 			
@@ -2441,6 +2447,9 @@ namespace TodoApp
 			
 			// aapt resource value: 0x7f080073
 			public const int Base_Widget_AppCompat_Toolbar_Button_Navigation = 2131230835;
+			
+			// aapt resource value: 0x7f080134
+			public const int MyDrawerArrowStyle = 2131231028;
 			
 			// aapt resource value: 0x7f080133
 			public const int MyTheme = 2131231027;
