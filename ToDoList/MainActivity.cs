@@ -15,7 +15,7 @@ using Android.Support.V4.Widget;
 namespace ToDoList
 {
     [Activity(Label = "ToDoList", MainLauncher = true, Icon = "@drawable/icon", Theme = "@style/MyTheme")]
-    public class MainActivity : AppCompatActivity
+    public class MainActivity : AppCompatActivity, AdapterView.IOnItemClickListener
     {
         private ListView mTaskListView;
         private ArrayAdapter<string> mAdapter;
@@ -24,6 +24,8 @@ namespace ToDoList
         private DrawerLayout mDrawerLayout;
         private MyActionBarDrawerToggle mDrawerToggle;
         private ListView mLeftDrawer;
+        private List<string> mLeftDataSet;
+        private NavigationDrawerAdapter mLeftAdapter;
 
         protected override void OnCreate(Bundle bundle)
         {
@@ -38,6 +40,13 @@ namespace ToDoList
             mLeftDrawer = FindViewById<ListView>(Resource.Id.left_drawer);
             SetSupportActionBar(mToolbar);
 
+            mLeftDataSet = new List<string>();
+            mLeftDataSet.Add("To do");
+            mLeftDataSet.Add("Doing");
+            mLeftDataSet.Add("Done");
+            mLeftAdapter = new NavigationDrawerAdapter(this, Android.Resource.Layout.SimpleListItem1, mLeftDataSet);
+            mLeftDrawer.Adapter = mLeftAdapter;
+            mLeftDrawer.OnItemClickListener = this;
             mDrawerToggle = new MyActionBarDrawerToggle(
                 this,                           //Host Activity
                 mDrawerLayout,                  //DrawerLayout
@@ -129,6 +138,12 @@ namespace ToDoList
                 mAdapter.AddAll(tasksTitle);
                 mAdapter.NotifyDataSetChanged();
             }
+        }
+
+        public void OnItemClick(AdapterView parent, View view, int position, long id)
+        {
+            mLeftAdapter.SelectedItem = position;
+            mLeftAdapter.NotifyDataSetChanged();
         }
     }
 }
