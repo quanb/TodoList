@@ -39,6 +39,7 @@ namespace ToDoList
             mDrawerLayout = FindViewById<DrawerLayout>(Resource.Id.drawer_layout);
             mLeftDrawer = FindViewById<ListView>(Resource.Id.left_drawer);
             SetSupportActionBar(mToolbar);
+            
 
             mLeftDataSet = new List<string>();
             mLeftDataSet.Add("To do");
@@ -61,7 +62,7 @@ namespace ToDoList
             SupportActionBar.SetDisplayShowTitleEnabled(true);
             mDrawerToggle.SyncState();
 
-            updateUI();
+            UpdateUI();
         }
 
         public override bool OnCreateOptionsMenu(IMenu menu)
@@ -89,7 +90,7 @@ namespace ToDoList
                                     Title = taskEditText.Text
                                 };
                                 TaskRepository.SaveTask(newTask);
-                                updateUI();
+                                UpdateUI();
                             })
                             .SetNegativeButton("Cancel", (EventHandler<DialogClickEventArgs>)null)
                             .Create();
@@ -113,7 +114,7 @@ namespace ToDoList
             mDrawerToggle.OnConfigurationChanged(newConfig);
         }
 
-        private void updateUI()
+        private void UpdateUI()
         {
             tasks = TaskRepository.GetTasks().ToList();
 
@@ -138,10 +139,26 @@ namespace ToDoList
                 mAdapter.AddAll(tasksTitle);
                 mAdapter.NotifyDataSetChanged();
             }
+            int myIntValue = 0;
+            ISharedPreferences prefs = GetSharedPreferences(
+                        "QuanList", FileCreationMode.Private);
+            if (prefs.Contains("QuanMen"))
+            {
+                myIntValue = prefs.GetInt("QuanMen", 0);
+            }
+            mLeftAdapter.SelectedItem = myIntValue;
+            mLeftAdapter.NotifyDataSetChanged();
         }
+
 
         public void OnItemClick(AdapterView parent, View view, int position, long id)
         {
+            ISharedPreferences prefs = GetSharedPreferences(
+                            "QuanList", FileCreationMode.Private);
+            ISharedPreferencesEditor editor = prefs.Edit();
+            editor.PutInt("QuanMen", position);
+            editor.Commit();
+
             mLeftAdapter.SelectedItem = position;
             mLeftAdapter.NotifyDataSetChanged();
         }
