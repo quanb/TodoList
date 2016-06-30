@@ -34,8 +34,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="DAL\Storage\BaseSQLiteRepository.cs" />
-    <Compile Include="DAL\Storage\TaskSQLiteRepository.cs" />
+    <Compile Include="DAL\Model\Task.cs" />
+    <Compile Include="DAL\Storage\TaskDatabase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -11,6 +11,7 @@ using System.Linq;
 using Android.Support.V7.App;
 using SupportToolbar = Android.Support.V7.Widget.Toolbar;
 using Android.Support.V4.Widget;
+using TodoApp.Core.DataLayer;
 
 namespace ToDoList
 {

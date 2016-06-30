@@ -1,10 +1,27 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using SQLite;
+using TodoApp.Core.DataLayer;
+using SQLite.Net.Platform.XamarinAndroid;
 
 namespace TodoApp.DataLayer
 {
     public class TaskRepository
     {
+        public static string DatabaseFilePath
+        {
+            get
+            {
+                var sqliteFilename = "TaskDB.db3";
+
+                string libraryPath = Environment.GetFolderPath(Environment.SpecialFolder.Personal); ;
+                var path = Path.Combine(libraryPath, sqliteFilename);
+                return path;
+            }
+        }
+
         TaskDatabase db = null;
         protected static TaskRepository me;
         static TaskRepository()
@@ -13,7 +30,7 @@ namespace TodoApp.DataLayer
         }
         protected TaskRepository()
         {
-            db = new TaskDatabase(TaskDatabase.DatabaseFilePath);
+            db = new TaskDatabase(new SQLitePlatformAndroid(), DatabaseFilePath);
         }
 
         public static Task GetTask(int id)

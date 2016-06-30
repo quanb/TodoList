@@ -3,27 +3,18 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using SQLite;
+using SQLite.Net;
+using SQLite.Net.Interop;
 
-namespace TodoApp.DataLayer
+namespace TodoApp.Core.DataLayer
 {
     public class TaskDatabase : SQLiteConnection
     {
         static object locker = new object();
 
-        public static string DatabaseFilePath
+        public TaskDatabase(ISQLitePlatform platform, string path)
+            : base(platform, path)
         {
-            get
-            {
-                var sqliteFilename = "TaskDB.db3";
-
-                string libraryPath = Environment.GetFolderPath(Environment.SpecialFolder.Personal); ;
-                var path = Path.Combine(libraryPath, sqliteFilename);
-                return path;
-            }
-        }
-
-        public TaskDatabase(string path) : base (path)
-		{
             // create the tables
             CreateTable<Task>();
         }

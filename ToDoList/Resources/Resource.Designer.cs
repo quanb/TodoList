@@ -26,6 +26,8 @@ namespace ToDoList
 		
 		public static void UpdateIdValues()
 		{
+			global::SQLite.Net.Platform.XamarinAndroid.Resource.String.ApplicationName = global::ToDoList.Resource.String.ApplicationName;
+			global::SQLite.Net.Platform.XamarinAndroid.Resource.String.Hello = global::ToDoList.Resource.String.Hello;
 		}
 		
 		public partial class Animation

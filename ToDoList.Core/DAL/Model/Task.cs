@@ -1,8 +1,9 @@
 using SQLite;
+using SQLite.Net.Attributes;
 using System;
 
 
-namespace TodoApp.DataLayer
+namespace TodoApp.Core.DataLayer
 {
     public class Task
     {
