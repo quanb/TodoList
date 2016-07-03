@@ -27,6 +27,7 @@ namespace ToDoList
         private ListView mLeftDrawer;
         private List<string> mLeftDataSet;
         private NavigationDrawerAdapter mLeftAdapter;
+        private int _currentType;
 
         protected override void OnCreate(Bundle bundle)
         {
@@ -63,6 +64,14 @@ namespace ToDoList
             SupportActionBar.SetDisplayShowTitleEnabled(true);
             mDrawerToggle.SyncState();
 
+            _currentType = 0;
+            ISharedPreferences prefs = GetSharedPreferences(
+                        "QuanList", FileCreationMode.Private);
+            if (prefs.Contains("QuanMen"))
+            {
+                _currentType = prefs.GetInt("QuanMen", 0);
+            }
+
             UpdateUI();
         }
 
@@ -88,7 +97,8 @@ namespace ToDoList
                                 // Do something when this button is clicked.
                                 var newTask = new Task()
                                 {
-                                    Title = taskEditText.Text
+                                    Title = taskEditText.Text,
+                                    Type = _currentType
                                 };
                                 TaskRepository.SaveTask(newTask);
                                 UpdateUI();
@@ -117,7 +127,10 @@ namespace ToDoList
 
         private void UpdateUI()
         {
-            tasks = TaskRepository.GetTasks().ToList();
+            mLeftAdapter.SelectedItem = _currentType;
+            mLeftAdapter.NotifyDataSetChanged();
+
+            tasks = TaskRepository.GetTasksByType(_currentType).ToList();
 
             List<string> tasksTitle = new List<string>();
 
@@ -140,15 +153,7 @@ namespace ToDoList
                 mAdapter.AddAll(tasksTitle);
                 mAdapter.NotifyDataSetChanged();
             }
-            int myIntValue = 0;
-            ISharedPreferences prefs = GetSharedPreferences(
-                        "QuanList", FileCreationMode.Private);
-            if (prefs.Contains("QuanMen"))
-            {
-                myIntValue = prefs.GetInt("QuanMen", 0);
-            }
-            mLeftAdapter.SelectedItem = myIntValue;
-            mLeftAdapter.NotifyDataSetChanged();
+            
         }
 
 
@@ -159,9 +164,8 @@ namespace ToDoList
             ISharedPreferencesEditor editor = prefs.Edit();
             editor.PutInt("QuanMen", position);
             editor.Commit();
-
-            mLeftAdapter.SelectedItem = position;
-            mLeftAdapter.NotifyDataSetChanged();
+            _currentType = position;
+            UpdateUI();
         }
     }
 }

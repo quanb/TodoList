@@ -43,6 +43,11 @@ namespace TodoApp.DataLayer
             return me.db.GetTasks();
         }
 
+        public static IEnumerable<Task> GetTasksByType(int type)
+        {
+            return me.db.GetTasks().Where(c => c.Type == type);
+        }
+
         public static int SaveTask(Task item)
         {
             return me.db.SaveTask(item);

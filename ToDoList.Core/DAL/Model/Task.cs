@@ -11,5 +11,7 @@ namespace TodoApp.Core.DataLayer
         public int Id { get; set; }
 
         public string Title { get; set; }
+
+        public int Type { get; set; }
     }
 }
